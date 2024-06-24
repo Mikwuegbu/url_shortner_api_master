@@ -1,2 +1,1 @@
-# url_shortner_api_master
-This is frontendmentor Challenge
+# Frontend Mentor - Shortly URL shortening API Challenge solution
