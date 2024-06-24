@@ -6,4 +6,11 @@
 
 * {
 	font-size: 18px;
+	font-family: 'Poppins', sans-serif;
+}
+
+@layer utilities {
+	.navItems {
+		@apply bg-Primary-darkViolet my-10 text-white font-medium text-center space-y-7 py-10 mx-4 rounded-2xl;
+	}
 }
