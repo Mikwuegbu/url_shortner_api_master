@@ -21,6 +21,10 @@ export default {
 					Very_Dark_Violet: 'hsl(260, 8%, 14%)',
 				},
 			},
+			backgroundImage: {
+				bgFormMobile: 'url("./src/assets/images/bg-shorten-mobile.svg")',
+				bgFormDesktop: 'url("./src/assets/images/bg-shorten-desktop.svg")',
+			},
 		},
 	},
 	plugins: [],
