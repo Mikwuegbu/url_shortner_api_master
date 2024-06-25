@@ -1,9 +1,11 @@
+import HeroSection from './components/HeroSection';
 import Navbar from './components/Navbar';
 
 const App = () => (
 	<>
-		<div>
+		<div className="overflow-hidden">
 			<Navbar />
+			<HeroSection />
 		</div>
 	</>
 );

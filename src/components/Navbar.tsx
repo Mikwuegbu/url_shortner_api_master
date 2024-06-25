@@ -12,16 +12,16 @@ const Navbar = () => {
 	};
 
 	return (
-		<nav className="flex justify-between px-5 md:px-12 lg:px-24 py-8">
+		<nav className="flex justify-between px-5 md:px-24 py-8">
 			<div className="flex space-x-14">
 				<a href="#">
 					<img
 						src={logo}
-						alt=""
+						alt={logo}
 						className="bg-Neutral-Very Dark Violet min-w-28"
 					/>
 				</a>
-				<ul className="lg:flex space-x-8 content-center place-items-center font-medium text-Neutral-Gray hidden">
+				<ul className="md:flex space-x-8 content-center place-items-center font-medium text-Neutral-Gray hidden">
 					<li>
 						<a href="#">Features</a>
 					</li>
@@ -33,13 +33,13 @@ const Navbar = () => {
 					</li>
 				</ul>
 			</div>
-			<div className="lg:flex font-medium space-x-4 hidden">
+			<div className="md:flex font-medium space-x-4 hidden">
 				<button className="text-Neutral-Gray px-4">Login</button>
 				<button className="bg-Primary-cyan px-8 py-1.5 rounded-full text-white text-nowrap">
 					Sign Up
 				</button>
 			</div>
-			<button className="lg:hidden" onClick={handleNavbar}>
+			<button className="md:hidden" onClick={handleNavbar}>
 				<img
 					src={toggle == false ? openToggle : closeToggle}
 					alt=""
@@ -50,7 +50,7 @@ const Navbar = () => {
 				className={`${
 					toggle == false
 						? 'hidden'
-						: 'absolute top-12 left-0 right-0 bottom-10 mt-2'
+						: 'absolute top-12 left-0 right-0 bottom-10 mt-2 z-10'
 				}`}
 			>
 				<ul className="navItems">
