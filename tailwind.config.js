@@ -24,6 +24,8 @@ export default {
 			backgroundImage: {
 				bgFormMobile: 'url("./src/assets/images/bg-shorten-mobile.svg")',
 				bgFormDesktop: 'url("./src/assets/images/bg-shorten-desktop.svg")',
+				bgFooterMobile: 'url("./src/assets/images/bg-boost-mobile.svg")',
+				bgFooterDesktop: 'url("./src/assets/images/bg-boost-desktop.svg")',
 			},
 		},
 	},
