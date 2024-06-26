@@ -2,7 +2,7 @@ import { advancedStats } from '../../public/data.ts';
 
 const ShortnenUrl = () => {
 	return (
-		<div className="bg-gray-200 mt-36 md:my-6">
+		<div className="bg-gray-200 mt-36 md:mt-6">
 			<div className="px-5 md:px-24">
 				<div className="relative -top-16 md:-top-10 flex justify-center md:bg-bgFormDesktop bg-bgFormMobile rounded-xl">
 					<div className="formContainer">

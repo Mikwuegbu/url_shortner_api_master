@@ -3,7 +3,7 @@ import { footerIcons, footerOptions } from '../../public/data';
 const Footer = () => {
 	return (
 		<footer className="">
-			<div className="bg-bgFooterMobile bg-Primary-darkViolet px-6 py-20 space-y-6 items-center justify-center flex flex-col">
+			<div className="bg-bgFooterMobile md:bg-bgFooterDesktop bg-Primary-darkViolet px-6 py-20 space-y-6 items-center justify-center flex flex-col">
 				<div className="text-white font-bold text-2xl">
 					Boost your links today
 				</div>
@@ -12,7 +12,7 @@ const Footer = () => {
 				</button>
 			</div>
 			<div className="footerLinks">
-				<h1 className="font-bold text-3xl md:mt-7 md:px-20">Shortly</h1>
+				<h1 className="font-bold text-3xl md:mt-7">Shortly</h1>
 				{footerOptions.map((footerLinks) => (
 					<div key={footerLinks.id} className="text-center md:text-justify">
 						<h2 className="font-semibold text-lg pb-4">{footerLinks.title}</h2>
