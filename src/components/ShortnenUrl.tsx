@@ -1,10 +1,13 @@
-import { useState, ChangeEvent, MouseEvent } from 'react';
+import { useState, useRef, ChangeEvent, MouseEvent } from 'react';
 import { advancedStats } from '../../public/data.ts';
 
 const ShortenUrl = () => {
 	const [error, setError] = useState<null | string>(null);
 	const [input, setInput] = useState<string>('');
 	const [shortUrl, setShortUrl] = useState<string | null>(null);
+	const inputRef = useRef<HTMLInputElement>(null);
+	const [initialInput, setinitialInput] = useState<string>('');
+	const [buttonText, setbuttonText] = useState<string>('Copy');
 
 	//handle input
 	const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
@@ -12,16 +15,13 @@ const ShortenUrl = () => {
 	};
 
 	//fetch Logic
-	const fetchData = async (
-		url: string,
-		options: RequestInit
-	): Promise<{ result_url: string } | null> => {
+	const fetchData = async (url: string): Promise<string | null> => {
 		try {
-			const res = await fetch(url, options);
+			const res = await fetch(url);
 			if (!res.ok) {
 				throw new Error('Failed to shorten URL');
 			}
-			const data = await res.json();
+			const data = await res.text();
 			return data;
 		} catch (error: unknown) {
 			setError((error as Error).message);
@@ -32,30 +32,44 @@ const ShortenUrl = () => {
 	//Handle the Submit
 	const handleSubmit = async (e: MouseEvent<HTMLButtonElement>) => {
 		e.preventDefault();
+		inputRef.current?.focus();
+		const urlPattern = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i;
 		setError(null);
-		if (input.trim() === '') {
-			alert('Please enter a valid URL');
-			return;
+		if (!urlPattern.test(input)) {
+			setError('Please enter a valid URL');
+			return setInput('');
 		}
 
 		//encoding and formating Input
-		const encodedUrl = encodeURIComponent(
-			input.trim().replace(/\s+/g, '').toLowerCase()
+		setinitialInput(input);
+		setInput(input.trim().toLowerCase());
+		const formattedUrl = input.trim().toLowerCase();
+		const encodedUrl = encodeURIComponent(formattedUrl);
+
+		const data = await fetchData(
+			`https://tinyurl.com/api-create.php?url=${encodedUrl}`
 		);
 
-		const data = await fetchData('https://cleanuri.com/api/v1/shorten', {
-			mode: 'no-cors',
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/x-www-form-urlencoded',
-			},
-			body: `url=${encodedUrl}`,
-		});
-
-		if (data && data.result_url) {
-			setShortUrl(data.result_url);
+		if (data && data) {
+			setShortUrl(data);
 		} else {
 			setError('Failed to retrieve short URL');
+		}
+
+		return setInput('');
+	};
+
+	//handle the Copy
+	const handleCopyLink = async (
+		e: MouseEvent<HTMLButtonElement>
+	): Promise<void> => {
+		e.preventDefault();
+		try {
+			const copyLink = shortUrl as string;
+			await navigator.clipboard.writeText(copyLink);
+			setbuttonText('Copied');
+		} catch (err) {
+			console.error('Failed to copy: ', err);
 		}
 	};
 
@@ -70,7 +84,11 @@ const ShortenUrl = () => {
 							onChange={handleInput}
 							value={input}
 							placeholder="Enter URL"
+							ref={inputRef}
 						/>
+						{error && (
+							<p className="text-Secondary-red text-justify text-sm">{error}</p>
+						)}
 						<button
 							className="bg-Primary-cyan py-2 rounded-lg w-full md:w-auto text-white font-medium text-nowrap md:px-6"
 							onClick={handleSubmit}
@@ -79,17 +97,28 @@ const ShortenUrl = () => {
 						</button>
 					</div>
 				</div>
-				<div className="mt-4">
-					{error && <p className="text-red-500">{error}</p>}
+				<div className="-mt-10 md:-mt-5">
 					{shortUrl && (
-						<div className="bg-white p-4 rounded-lg shadow-md">
-							<p>
-								Shortened URL: <a className="text-blue-500">{shortUrl}</a>
-							</p>
+						<div className="bg-white p-4 md:py-4 rounded-lg shadow-md space-y-2 md:space-y-0 px-4 md:px-10 flex md:flex-row flex-col justify-center md:justify-between">
+							<h1 className="text-justify font-medium text-wrap md:self-center">
+								{initialInput}
+							</h1>
+							<hr className="bg-Neutral-Grayish_Violet md:hidden" />
+							<div className="text-justify md:space-x-4 space-y-4 md:space-y-0 md:self-center">
+								<a href={shortUrl} className="text-blue-500 text-wrap">
+									{shortUrl}
+								</a>
+								<button
+									className=" bg-Primary-cyan py-2 rounded-lg w-full md:w-auto text-white font-medium text-nowrap md:px-6"
+									onClick={handleCopyLink}
+								>
+									{buttonText}
+								</button>
+							</div>
 						</div>
 					)}
 				</div>
-				<div className="py-6">
+				<div className="py-8">
 					<div className="text-center space-y-4">
 						<h2 className="font-bold text-2xl text-Neutral-Very_Dark_Blue">
 							Advanced Statistics
